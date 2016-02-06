@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6A7E3EB31C5DE62F00411E28 /* Chocolate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A7E3EB21C5DE62F00411E28 /* Chocolate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6A7E3EBA1C5DE63000411E28 /* Chocolate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7E3EAF1C5DE62F00411E28 /* Chocolate.framework */; };
 		6A7E3EBF1C5DE63000411E28 /* ChocolateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E3EBE1C5DE63000411E28 /* ChocolateTests.swift */; };
 /* End PBXBuildFile section */
@@ -24,7 +23,6 @@
 
 /* Begin PBXFileReference section */
 		6A7E3EAF1C5DE62F00411E28 /* Chocolate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Chocolate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A7E3EB21C5DE62F00411E28 /* Chocolate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Chocolate.h; sourceTree = "<group>"; };
 		6A7E3EB41C5DE62F00411E28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A7E3EB91C5DE63000411E28 /* ChocolateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChocolateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A7E3EBE1C5DE63000411E28 /* ChocolateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChocolateTests.swift; sourceTree = "<group>"; };
@@ -71,7 +69,6 @@
 		6A7E3EB11C5DE62F00411E28 /* Chocolate */ = {
 			isa = PBXGroup;
 			children = (
-				6A7E3EB21C5DE62F00411E28 /* Chocolate.h */,
 				6A7E3EB41C5DE62F00411E28 /* Info.plist */,
 			);
 			path = Chocolate;
@@ -93,7 +90,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A7E3EB31C5DE62F00411E28 /* Chocolate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,28 +304,33 @@
 		6A7E3EC41C5DE63000411E28 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Chocolate/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tristanburnside.Chocolate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		6A7E3EC51C5DE63000411E28 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Chocolate/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tristanburnside.Chocolate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -376,6 +377,7 @@
 				6A7E3EC51C5DE63000411E28 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6A7E3EC61C5DE63000411E28 /* Build configuration list for PBXNativeTarget "ChocolateTests" */ = {
 			isa = XCConfigurationList;
@@ -384,6 +386,7 @@
 				6A7E3EC81C5DE63000411E28 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
