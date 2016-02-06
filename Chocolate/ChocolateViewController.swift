@@ -12,9 +12,10 @@ public class ChocolateViewController: UIViewController {
 
     private let operationQueue = NSOperationQueue()
     
+    /// This property is designed to allow other view controllers to pass data in to this view controller
     public var configurationData : AnyObject?
+
     @IBOutlet private var configureDataOperation : ChocolateConfigureDataOperation?
-    
     
     override public func viewDidLoad() {
         super.viewDidLoad()

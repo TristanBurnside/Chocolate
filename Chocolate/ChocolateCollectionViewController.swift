@@ -29,8 +29,6 @@ public class ChocolateCollectionViewController: UICollectionViewController {
     }
 
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if cellSegueOperation == nil {
             if let selectedChocolateCell = sender as? ChocolateCell {
@@ -51,7 +49,7 @@ public class ChocolateCollectionViewController: UICollectionViewController {
     }
 
     @IBAction func prepareForUnwind(segue : UIStoryboardSegue) {
-        
+        assertionFailure("Not yet implemented")
     }
     
     // MARK: UICollectionViewDataSource
