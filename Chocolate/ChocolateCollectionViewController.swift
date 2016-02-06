@@ -8,8 +8,6 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 public class ChocolateCollectionViewController: UICollectionViewController {
 
     //Note to self: this is AnyObject because protocol implementing properties cannot be @IBOutlet
@@ -19,9 +17,13 @@ public class ChocolateCollectionViewController: UICollectionViewController {
     @IBOutlet private var cellSelectionOperation : CellSelectionOperation?
     @IBOutlet private var cellSegueOperation : CellSegueOperation?
     
+    /// The reuseIdentifier for the cells in the collection view. Must match the reuseIdentifier for the 
+    /// Prototype cells in the storyboard
+    @IBInspectable public var reuseIdentifier : String!
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
-
+        
         dataLoadOperation = LoadDataOperation(dataManager: dataSource as! ChocolateCollectionDataSource)
         
         cellOperationQueue.addOperation(dataLoadOperation!)
