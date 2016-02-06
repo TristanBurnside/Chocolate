@@ -51,7 +51,7 @@ public class ChocolateCollectionViewController: UICollectionViewController {
     }
 
     @IBAction func prepareForUnwind(segue : UIStoryboardSegue) {
-        assertionFailure("Not yet implemented")
+        
     }
     
     // MARK: UICollectionViewDataSource
