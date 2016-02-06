@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		6A7E3EBA1C5DE63000411E28 /* Chocolate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7E3EAF1C5DE62F00411E28 /* Chocolate.framework */; };
 		6A7E3EBF1C5DE63000411E28 /* ChocolateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E3EBE1C5DE63000411E28 /* ChocolateTests.swift */; };
+		6A7E3ED11C5DE67500411E28 /* ChocolateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E3EC91C5DE67500411E28 /* ChocolateCell.swift */; };
+		6A7E3ED21C5DE67500411E28 /* ChocolateCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E3ECA1C5DE67500411E28 /* ChocolateCollectionDataSource.swift */; };
+		6A7E3ED31C5DE67500411E28 /* ChocolateCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E3ECB1C5DE67500411E28 /* ChocolateCollectionViewController.swift */; };
+		6A7E3ED41C5DE67500411E28 /* ChocolateConfigureDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E3ECC1C5DE67500411E28 /* ChocolateConfigureDataOperation.swift */; };
+		6A7E3ED51C5DE67500411E28 /* ChocolateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E3ECD1C5DE67500411E28 /* ChocolateViewController.swift */; };
+		6A7E3ED61C5DE67500411E28 /* ItemCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E3ECE1C5DE67500411E28 /* ItemCountOperation.swift */; };
+		6A7E3ED71C5DE67500411E28 /* LoadDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E3ECF1C5DE67500411E28 /* LoadDataOperation.swift */; };
+		6A7E3ED81C5DE67500411E28 /* SectionCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E3ED01C5DE67500411E28 /* SectionCountOperation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +35,14 @@
 		6A7E3EB91C5DE63000411E28 /* ChocolateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChocolateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A7E3EBE1C5DE63000411E28 /* ChocolateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChocolateTests.swift; sourceTree = "<group>"; };
 		6A7E3EC01C5DE63000411E28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A7E3EC91C5DE67500411E28 /* ChocolateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChocolateCell.swift; sourceTree = "<group>"; };
+		6A7E3ECA1C5DE67500411E28 /* ChocolateCollectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChocolateCollectionDataSource.swift; sourceTree = "<group>"; };
+		6A7E3ECB1C5DE67500411E28 /* ChocolateCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChocolateCollectionViewController.swift; sourceTree = "<group>"; };
+		6A7E3ECC1C5DE67500411E28 /* ChocolateConfigureDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChocolateConfigureDataOperation.swift; sourceTree = "<group>"; };
+		6A7E3ECD1C5DE67500411E28 /* ChocolateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChocolateViewController.swift; sourceTree = "<group>"; };
+		6A7E3ECE1C5DE67500411E28 /* ItemCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCountOperation.swift; sourceTree = "<group>"; };
+		6A7E3ECF1C5DE67500411E28 /* LoadDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadDataOperation.swift; sourceTree = "<group>"; };
+		6A7E3ED01C5DE67500411E28 /* SectionCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionCountOperation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +85,14 @@
 		6A7E3EB11C5DE62F00411E28 /* Chocolate */ = {
 			isa = PBXGroup;
 			children = (
+				6A7E3EC91C5DE67500411E28 /* ChocolateCell.swift */,
+				6A7E3ECA1C5DE67500411E28 /* ChocolateCollectionDataSource.swift */,
+				6A7E3ECB1C5DE67500411E28 /* ChocolateCollectionViewController.swift */,
+				6A7E3ECC1C5DE67500411E28 /* ChocolateConfigureDataOperation.swift */,
+				6A7E3ECD1C5DE67500411E28 /* ChocolateViewController.swift */,
+				6A7E3ECE1C5DE67500411E28 /* ItemCountOperation.swift */,
+				6A7E3ECF1C5DE67500411E28 /* LoadDataOperation.swift */,
+				6A7E3ED01C5DE67500411E28 /* SectionCountOperation.swift */,
 				6A7E3EB41C5DE62F00411E28 /* Info.plist */,
 			);
 			path = Chocolate;
@@ -190,6 +214,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A7E3ED61C5DE67500411E28 /* ItemCountOperation.swift in Sources */,
+				6A7E3ED11C5DE67500411E28 /* ChocolateCell.swift in Sources */,
+				6A7E3ED21C5DE67500411E28 /* ChocolateCollectionDataSource.swift in Sources */,
+				6A7E3ED71C5DE67500411E28 /* LoadDataOperation.swift in Sources */,
+				6A7E3ED31C5DE67500411E28 /* ChocolateCollectionViewController.swift in Sources */,
+				6A7E3ED81C5DE67500411E28 /* SectionCountOperation.swift in Sources */,
+				6A7E3ED41C5DE67500411E28 /* ChocolateConfigureDataOperation.swift in Sources */,
+				6A7E3ED51C5DE67500411E28 /* ChocolateViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
