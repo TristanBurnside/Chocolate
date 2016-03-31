@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ChocolateCollectionViewController: UICollectionViewController {
+public class ChocolateCollectionViewController: UICollectionViewController, ConfigurableViewController {
 
     //Note to self: this is AnyObject because protocol implementing properties cannot be @IBOutlet
     @IBOutlet private var dataSource : AnyObject?
@@ -21,7 +21,21 @@ public class ChocolateCollectionViewController: UICollectionViewController {
     /// The reuseIdentifier for the cells in the collection view. Must match the reuseIdentifier for the 
     /// Prototype cells in the storyboard
     @IBInspectable public var reuseIdentifier : String!
+    @IBOutlet private var configureDataOperation : ChocolateConfigureDataOperation?
     
+    /// This property is designed to allow other view controllers to pass data in to this view controller
+    public var configurationData : AnyObject? {
+        didSet {
+            if let configureDataOperation = configureDataOperation {
+                configureDataOperation.configurationData = configurationData
+                cellOperationQueue.addOperation(NSBlockOperation(block: { () -> Void in
+                    configureDataOperation.main()
+                    self.refreshDataIfNeeded()
+                }));
+            }
+        }
+    }
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +51,24 @@ public class ChocolateCollectionViewController: UICollectionViewController {
         
     }
 
+    override public func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshDataIfNeeded()
+    }
+    
+    private func refreshDataIfNeeded() {
+        if var chocolateDataSource = chocolateDataSource,
+           let collectionView = collectionView {
+                    
+            if chocolateDataSource.needsReload {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    collectionView.reloadData()
+                })
+                chocolateDataSource.needsReload = false
+            }
+        }
+    }
+    
     // MARK: - Navigation
     override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if cellSegueOperation == nil {

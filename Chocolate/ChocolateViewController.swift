@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ChocolateViewController: UIViewController {
+public class ChocolateViewController: UIViewController, ConfigurableViewController {
 
     private let operationQueue = NSOperationQueue()
     
@@ -29,3 +29,6 @@ public class ChocolateViewController: UIViewController {
 
 }
 
+public protocol ConfigurableViewController {
+    var configurationData : AnyObject?{get set}
+}
