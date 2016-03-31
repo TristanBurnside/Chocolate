@@ -10,9 +10,9 @@ import Foundation
 
 class LoadDataOperation : NSOperation {
     
-    private let dataManager : ChocolateCollectionDataSource
+    private let dataManager : ChocolateCellDataSource
     
-    init(dataManager:ChocolateCollectionDataSource) {
+    init(dataManager:ChocolateCellDataSource) {
         self.dataManager = dataManager
         super.init()
     }

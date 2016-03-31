@@ -24,9 +24,15 @@ public class ChocolateCollectionViewController: UICollectionViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        dataLoadOperation = LoadDataOperation(dataManager: dataSource as! ChocolateCollectionDataSource)
+        chocolateDataSource = dataSource as? ChocolateCellDataSource
         
-        cellOperationQueue.addOperation(dataLoadOperation!)
+        if let chocolateDataSource = chocolateDataSource {
+            
+            dataLoadOperation = LoadDataOperation(dataManager: chocolateDataSource)
+        
+            cellOperationQueue.addOperation(dataLoadOperation!)
+            
+        }
         
     }
 

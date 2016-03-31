@@ -9,10 +9,10 @@
 import Foundation
 
 class SectionCountOperation : NSOperation {
-    private let dataManager : ChocolateCollectionDataSource
+    private let dataManager : ChocolateCellDataSource
     private let completion : (Int) -> ()
     
-    init(dataManager:ChocolateCollectionDataSource, completion : (Int) -> ()) {
+    init(dataManager:ChocolateCellDataSource, completion : (Int) -> ()) {
         self.dataManager = dataManager
         self.completion = completion
         super.init()

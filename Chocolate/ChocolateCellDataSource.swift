@@ -1,5 +1,5 @@
 //
-//  ChocolateCollectionDataSource.swift
+//  ChocolateCellDataSource.swift
 //  ChocolatePuppies
 //
 //  Created by Tristan Burnside on 24/01/2016.
@@ -9,7 +9,10 @@
 /**
 *  This protocol is used by ChocolateCollectionViewController to gather data to display in the cells
 */
-public protocol ChocolateCollectionDataSource {
+public protocol ChocolateCellDataSource {
+    
+    var needsReload : Bool {get set}
+    
     /**
      Should return the number of sections in the collection view
      

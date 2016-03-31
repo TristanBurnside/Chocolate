@@ -9,10 +9,10 @@
 import Foundation
 
 class ItemCountOperation : NSOperation {
-    private let dataManager : ChocolateCollectionDataSource
+    private let dataManager : ChocolateCellDataSource
     private let section : Int
     private let completion : (Int) -> ()
-    init(dataManager:ChocolateCollectionDataSource, section: Int, completion : (Int) -> ()) {
+    init(dataManager:ChocolateCellDataSource, section: Int, completion : (Int) -> ()) {
         self.dataManager = dataManager
         self.section = section
         self.completion = completion
