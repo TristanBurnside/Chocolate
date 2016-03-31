@@ -18,7 +18,7 @@ public protocol ChocolateCell {
      
      - returns: A CellConfigurationOperation object
      */
-    static func cellConfigurationOperation() -> CellConfigurationOperation
+    static func cellConfigurationOperation() -> CellConfigurationOperation.Type
     
     /**
      A class method to get an operation for applying any required changes before segueing when this cell is selected
@@ -31,17 +31,27 @@ public protocol ChocolateCell {
 /// Base class for operations that configure the view content of a cell
 public class CellConfigurationOperation : NSOperation {
     /// The cell to configure
-    public var cell : UICollectionViewCell?
+    public let cell : ChocolateCell
     /// The index path of the cell in the table or collection view
-    public var indexPath : NSIndexPath?
+    public let indexPath : NSIndexPath
     /// The data manager to query for the data to populate the cell with
-    public var dataManager : ChocolateCollectionDataSource?
+    public let dataManager : ChocolateCellDataSource
+    
+    required public init(cell:ChocolateCell,
+         indexPath:NSIndexPath,
+         dataManager:ChocolateCellDataSource) {
+            self.cell = cell
+            self.indexPath = indexPath
+            self.dataManager = dataManager
+            super.init()
+    }
+    
 }
 
 /// Base class for operations that run when a cell is selected
 public class CellSelectionOperation: NSObject {
     /// The cell that was selected
-    public var cell : UICollectionViewCell?
+    public var cell : ChocolateCell?
     
     public func main () {}
 }

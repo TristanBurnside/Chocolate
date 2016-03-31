@@ -12,6 +12,7 @@ public class ChocolateCollectionViewController: UICollectionViewController {
 
     //Note to self: this is AnyObject because protocol implementing properties cannot be @IBOutlet
     @IBOutlet private var dataSource : AnyObject?
+    private var chocolateDataSource : ChocolateCellDataSource?
     private let cellOperationQueue = NSOperationQueue()
     private var dataLoadOperation : NSOperation?
     @IBOutlet private var cellSelectionOperation : CellSelectionOperation?
@@ -44,7 +45,7 @@ public class ChocolateCollectionViewController: UICollectionViewController {
             }
         }
         if let cellSegueOperation = cellSegueOperation,
-               selectedCollectionViewCell = sender as? UICollectionViewCell {
+               selectedCollectionViewCell = sender as? ChocolateCell {
             cellSegueOperation.cell = selectedCollectionViewCell
             cellSegueOperation.destinationViewController = segue.destinationViewController
         }
@@ -64,24 +65,28 @@ public class ChocolateCollectionViewController: UICollectionViewController {
 
     override public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         var sectionCount : Int = 0
-        let sectionsOp = SectionCountOperation(dataManager: dataSource as! ChocolateCollectionDataSource){ (number :Int) in
-            sectionCount = number
+        if let chocolateDataSource = chocolateDataSource{
+            let sectionsOp = SectionCountOperation(dataManager: chocolateDataSource){ (number :Int) in
+                sectionCount = number
+            }
+            sectionsOp.addDependency(dataLoadOperation!)
+            cellOperationQueue.addOperation(sectionsOp)
+            cellOperationQueue.waitUntilAllOperationsAreFinished()
         }
-        sectionsOp.addDependency(dataLoadOperation!)
-        cellOperationQueue.addOperation(sectionsOp)
-        cellOperationQueue.waitUntilAllOperationsAreFinished()
         return sectionCount
     }
 
 
     override public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var itemCount : Int = 0
-        let itemsOp = ItemCountOperation(dataManager: dataSource as! ChocolateCollectionDataSource, section : section) { (number :Int) in
-            itemCount = number
+        if let chocolateDataSource = chocolateDataSource {
+            let itemsOp = ItemCountOperation(dataManager: chocolateDataSource, section : section) { (number :Int) in
+                itemCount = number
+            }
+            itemsOp.addDependency(dataLoadOperation!)
+            cellOperationQueue.addOperation(itemsOp)
+            cellOperationQueue.waitUntilAllOperationsAreFinished()
         }
-        itemsOp.addDependency(dataLoadOperation!)
-        cellOperationQueue.addOperation(itemsOp)
-        cellOperationQueue.waitUntilAllOperationsAreFinished()
         return itemCount
     }
 
@@ -89,11 +94,15 @@ public class ChocolateCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
         
         let cellClass = cell.dynamicType as! ChocolateCell.Type
-        let cellConfigOp = cellClass.cellConfigurationOperation()
-            cellConfigOp.cell = cell
-            cellConfigOp.indexPath = indexPath
-            cellConfigOp.dataManager = dataSource as? ChocolateCollectionDataSource
+        let cellConfigOpType = cellClass.cellConfigurationOperation()
+        let cellConfigOp : CellConfigurationOperation
+        
+        if let cell = cell as? ChocolateCell,
+               chocolateDataSource = chocolateDataSource {
+            cellConfigOp = cellConfigOpType.init(cell: cell, indexPath: indexPath, dataManager: chocolateDataSource)
+                
             cellOperationQueue.addOperation(cellConfigOp);
+        }
         
         return cell
     }
@@ -101,7 +110,7 @@ public class ChocolateCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDelegate
 
     override public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let selectedCell = collectionView.cellForItemAtIndexPath(indexPath)
+        let selectedCell = collectionView.cellForItemAtIndexPath(indexPath) as? ChocolateCell
         
         cellSelectionOperation?.cell = selectedCell
         
