@@ -19,11 +19,9 @@ public class ChocolateViewController: UIViewController, ConfigurableViewControll
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        if let configureDataOperation = configureDataOperation {
-            configureDataOperation.configurationData = configurationData
-            operationQueue.addOperation(NSBlockOperation(block: { () -> Void in
-                configureDataOperation.main()
-            }));
+        if let configureDataOperationCopy = configureDataOperation?.copy() as? ChocolateConfigureDataOperation {
+            configureDataOperationCopy.configurationData = configurationData
+            operationQueue.addOperation(configureDataOperationCopy)
         }
     }
 

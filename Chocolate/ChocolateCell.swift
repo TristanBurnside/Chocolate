@@ -49,11 +49,9 @@ public class CellConfigurationOperation : NSOperation {
 }
 
 /// Base class for operations that run when a cell is selected
-public class CellSelectionOperation: NSObject {
+public class CellSelectionOperation: NSOperation {
     /// The cell that was selected
     public var cell : ChocolateCell?
-    
-    public func main () {}
 }
 
 /// Base class for operations that run when a cell is selected and a segue will be performed

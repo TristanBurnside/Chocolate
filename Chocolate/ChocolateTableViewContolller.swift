@@ -25,12 +25,13 @@ public class ChocolateTableViewContolller: UITableViewController, ConfigurableVi
     /// This property is designed to allow other view controllers to pass data in to this view controller
     public var configurationData : AnyObject? {
         didSet {
-            if let configureDataOperation = configureDataOperation {
-                configureDataOperation.configurationData = configurationData
-                cellOperationQueue.addOperation(NSBlockOperation(block: { () -> Void in
-                    configureDataOperation.main()
+            if let configureDataOperationCopy = configureDataOperation?.copy() as? ChocolateConfigureDataOperation {
+                configureDataOperationCopy.configurationData = configurationData
+                let refreshOperation = NSBlockOperation(block: { () -> Void in
                     self.refreshDataIfNeeded()
-                }));
+                })
+                refreshOperation.addDependency(configureDataOperationCopy)
+                cellOperationQueue.addOperations([configureDataOperationCopy, refreshOperation], waitUntilFinished: false)
             }
         }
     }
@@ -39,11 +40,9 @@ public class ChocolateTableViewContolller: UITableViewController, ConfigurableVi
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        if let configureDataOperation = configureDataOperation {
-            configureDataOperation.configurationData = configurationData
-            cellOperationQueue.addOperation(NSBlockOperation(block: { () -> Void in
-                configureDataOperation.main()
-            }));
+        if let configureDataOperationCopy = configureDataOperation?.copy() as? ChocolateConfigureDataOperation {
+            configureDataOperationCopy.configurationData = configurationData
+            cellOperationQueue.addOperation(configureDataOperationCopy)
         }
         
         chocolateDataSource = dataSource as? ChocolateCellDataSource
@@ -86,10 +85,7 @@ public class ChocolateTableViewContolller: UITableViewController, ConfigurableVi
                 cellSegueOperation.destinationViewController = segue.destinationViewController
         }
         if let cellSegueOperation = cellSegueOperation {
-            let cellSegueBlockOperation = NSBlockOperation(block: { () -> Void in
-                cellSegueOperation.main();
-            })
-            cellOperationQueue.addOperation(cellSegueBlockOperation)
+            cellOperationQueue.addOperation(cellSegueOperation)
         }
     }
     
@@ -104,7 +100,9 @@ public class ChocolateTableViewContolller: UITableViewController, ConfigurableVi
             let sectionsOp = SectionCountOperation(dataManager: chocolateDataSource){ (number :Int) in
                 sectionCount = number
             }
-            sectionsOp.addDependency(dataLoadOperation!)
+            if let dataLoadOperation = dataLoadOperation {
+                sectionsOp.addDependency(dataLoadOperation)
+            }
             cellOperationQueue.addOperation(sectionsOp)
         }
 
@@ -115,14 +113,16 @@ public class ChocolateTableViewContolller: UITableViewController, ConfigurableVi
     
     override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var itemCount : Int = 0
-        let itemsOp = ItemCountOperation(dataManager: dataSource as! ChocolateCellDataSource, section : section) { (number :Int) in
-            itemCount = number
+        if let chocolateDataSource = chocolateDataSource {
+            let itemsOp = ItemCountOperation(dataManager: chocolateDataSource, section : section) { (number :Int) in
+                itemCount = number
+            }
+            if let dataLoadOperation = dataLoadOperation {
+                itemsOp.addDependency(dataLoadOperation)
+            }
+            cellOperationQueue.addOperation(itemsOp)
+            cellOperationQueue.waitUntilAllOperationsAreFinished()
         }
-        if let dataLoadOperation = dataLoadOperation {
-            itemsOp.addDependency(dataLoadOperation)
-        }
-        cellOperationQueue.addOperation(itemsOp)
-        cellOperationQueue.waitUntilAllOperationsAreFinished()
         return itemCount
     }
     
@@ -147,16 +147,15 @@ public class ChocolateTableViewContolller: UITableViewController, ConfigurableVi
     // MARK: UITableViewDelegate
     
     override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let selectedCell = tableView.cellForRowAtIndexPath(indexPath)
+        let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as? ChocolateCell
         
-        if let selectedCell = selectedCell as? ChocolateCell {
-            cellSelectionOperation?.cell = selectedCell
+        if let cellSelectionOperation = cellSelectionOperation,
+            selectedCollectionViewCell = selectedCell {
+                cellSelectionOperation.cell = selectedCollectionViewCell
         }
         
         if let cellSelectionOperation = cellSelectionOperation {
-            cellOperationQueue.addOperation(NSBlockOperation(block: { () -> Void in
-                cellSelectionOperation.main()
-            }))
+            cellOperationQueue.addOperation(cellSelectionOperation)
         }
         
     }

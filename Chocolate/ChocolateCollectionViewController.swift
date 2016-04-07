@@ -26,12 +26,13 @@ public class ChocolateCollectionViewController: UICollectionViewController, Conf
     /// This property is designed to allow other view controllers to pass data in to this view controller
     public var configurationData : AnyObject? {
         didSet {
-            if let configureDataOperation = configureDataOperation {
-                configureDataOperation.configurationData = configurationData
-                cellOperationQueue.addOperation(NSBlockOperation(block: { () -> Void in
-                    configureDataOperation.main()
+            if let configureDataOperationCopy = configureDataOperation?.copy() as? ChocolateConfigureDataOperation {
+                configureDataOperationCopy.configurationData = configurationData
+                let refreshOperation = NSBlockOperation(block: { () -> Void in
                     self.refreshDataIfNeeded()
-                }));
+                })
+                refreshOperation.addDependency(configureDataOperationCopy)
+                cellOperationQueue.addOperations([configureDataOperationCopy, refreshOperation], waitUntilFinished: false)
             }
         }
     }
@@ -82,10 +83,7 @@ public class ChocolateCollectionViewController: UICollectionViewController, Conf
             cellSegueOperation.destinationViewController = segue.destinationViewController
         }
         if let cellSegueOperation = cellSegueOperation {
-            let cellSegueBlockOperation = NSBlockOperation(block: { () -> Void in
-                cellSegueOperation.main();
-            })
-            cellOperationQueue.addOperation(cellSegueBlockOperation)
+            cellOperationQueue.addOperation(cellSegueOperation)
         }
     }
 
@@ -101,13 +99,14 @@ public class ChocolateCollectionViewController: UICollectionViewController, Conf
             let sectionsOp = SectionCountOperation(dataManager: chocolateDataSource){ (number :Int) in
                 sectionCount = number
             }
-            sectionsOp.addDependency(dataLoadOperation!)
+            if let dataLoadOperation = dataLoadOperation {
+                sectionsOp.addDependency(dataLoadOperation)
+            }
             cellOperationQueue.addOperation(sectionsOp)
             cellOperationQueue.waitUntilAllOperationsAreFinished()
         }
         return sectionCount
     }
-
 
     override public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var itemCount : Int = 0
@@ -115,7 +114,9 @@ public class ChocolateCollectionViewController: UICollectionViewController, Conf
             let itemsOp = ItemCountOperation(dataManager: chocolateDataSource, section : section) { (number :Int) in
                 itemCount = number
             }
-            itemsOp.addDependency(dataLoadOperation!)
+            if let dataLoadOperation = dataLoadOperation {
+                itemsOp.addDependency(dataLoadOperation)
+            }
             cellOperationQueue.addOperation(itemsOp)
             cellOperationQueue.waitUntilAllOperationsAreFinished()
         }
@@ -125,17 +126,17 @@ public class ChocolateCollectionViewController: UICollectionViewController, Conf
     override public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
         
-        let cellClass = cell.dynamicType as! ChocolateCell.Type
-        let cellConfigOpType = cellClass.cellConfigurationOperation()
-        let cellConfigOp : CellConfigurationOperation
+        if let cellClass = cell.dynamicType as? ChocolateCell.Type {
+            let cellConfigOpType = cellClass.cellConfigurationOperation()
+            let cellConfigOp : CellConfigurationOperation
         
-        if let cell = cell as? ChocolateCell,
-               chocolateDataSource = chocolateDataSource {
-            cellConfigOp = cellConfigOpType.init(cell: cell, indexPath: indexPath, dataManager: chocolateDataSource)
+            if let cell = cell as? ChocolateCell,
+                   chocolateDataSource = chocolateDataSource {
+                cellConfigOp = cellConfigOpType.init(cell: cell, indexPath: indexPath, dataManager: chocolateDataSource)
                 
-            cellOperationQueue.addOperation(cellConfigOp);
+                cellOperationQueue.addOperation(cellConfigOp);
+            }
         }
-        
         return cell
     }
 
@@ -143,13 +144,14 @@ public class ChocolateCollectionViewController: UICollectionViewController, Conf
 
     override public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selectedCell = collectionView.cellForItemAtIndexPath(indexPath) as? ChocolateCell
-        
-        cellSelectionOperation?.cell = selectedCell
+
+        if let cellSelectionOperation = cellSelectionOperation,
+            selectedCollectionViewCell = selectedCell {
+                cellSelectionOperation.cell = selectedCollectionViewCell
+        }
         
         if let cellSelectionOperation = cellSelectionOperation {
-            cellOperationQueue.addOperation(NSBlockOperation(block: { () -> Void in
-                cellSelectionOperation.main()
-            }))
+            cellOperationQueue.addOperation(cellSelectionOperation)
         }
         
     }
