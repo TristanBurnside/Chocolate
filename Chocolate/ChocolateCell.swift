@@ -13,6 +13,7 @@ import UIKit
  *  or ChocolateTableViewController
  */
 public protocol ChocolateCell {
+    
     /**
      A class mehod to get an operation for configuring the contents of this cell type
      
@@ -26,6 +27,31 @@ public protocol ChocolateCell {
      - returns: A CellSegueOperation
      */
     static func cellSegueOperation() -> CellSegueOperation
+    
+    /**
+     A class method to get an operation for reacting when this cell is selected
+     
+     - returns: A CellSelectionOperation
+     */
+    static func cellSelectionOperation() -> CellSelectionOperation
+}
+
+/**
+ * Provides default implementaiton for chocolateCell methods so that they can be optionally provided as required by the circumstances
+ */
+extension ChocolateCell {
+    static func cellConfigurationOperation() -> CellConfigurationOperation.Type {
+        return CellConfigurationOperation.self
+    }
+    
+    static func cellSegueOperation() -> CellSegueOperation {
+        return CellSegueOperation()
+    }
+    
+    static func cellSelectionOperation() -> CellSelectionOperation {
+        return CellSelectionOperation()
+    }
+    
 }
 
 /// Base class for operations that configure the view content of a cell
